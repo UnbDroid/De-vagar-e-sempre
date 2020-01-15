@@ -8,11 +8,14 @@ void setup_move() {
     pinMode(ENB, OUTPUT);
     pinMode(MB1, OUTPUT);
     pinMode(MB2, OUTPUT);
-    analogWrite(ENA, 50*PWM);
-    analogWrite(ENB, 50*PWM);
+    analogWrite(ENA, 200*PWM);
+    analogWrite(ENB, 200*PWM);
 }
 
-void frente(){
+void frente(int pot){
+
+    analogWrite(ENA, pot*PWM);
+    analogWrite(ENB, pot*PWM);
     digitalWrite(MA1, false);
     digitalWrite(MA2, true);
     digitalWrite(MB1, false);
@@ -48,8 +51,25 @@ void gira_direita(){
 
 }
 
+void liga(int a, int pot){ 
+    if (a){
+        analogWrite(ENA, 50*PWM);
+        analogWrite(ENB, pot*PWM);
+
+    } else {
+        analogWrite(ENB, 50*PWM);
+        analogWrite(ENA, pot*PWM);
+
+    }
+        digitalWrite(MA1, false);
+        digitalWrite(MA2, true);
+        digitalWrite(MB1, false);
+        digitalWrite(MB2, true);
+
+}
+
 void teste_move(){
-    frente();
+    frente(210);
     delay(3000);
     para();
     delay(1000);
