@@ -28,16 +28,18 @@ void loop() {
     Serial.println(a);
     switch (a) {
       case 0://Branco nos dois
-        frente(75);
+        motor(80,80);
         break;
       case 1://Preto na direita
-        liga(0, 75);
+        motor(150, -100);
+        delay(3);
         break;
       case 2://Preto na esquerda
-        liga(1, 75);
+        motor(-100, 150);
+        delay(3);
         break;
       case 3://Preto nos dois
-        frente(100);
+        motor(140, 140);
         break;
       default: //Erroooooooowwwwwww!
         para();
