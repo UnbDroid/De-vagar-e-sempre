@@ -5,7 +5,7 @@
 #define IRAd    26  //D0 do sensor IR esquerda - digital  
 
 #define PRETOA   500
-#define PRETOB  130
+#define PRETOB  180
 
 void setup_ir();
 

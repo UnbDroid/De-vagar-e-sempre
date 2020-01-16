@@ -6,9 +6,27 @@ void setup_ir() {
 }
 
 int line(int a){
-    if(a)
-        return (PRETOB <= analogRead(IRB));
-    return (PRETOA <= analogRead(IRA));
+    int cont = 0;
+    if(a){
+        for(int i = 0; i<5; i++) {
+            cont += analogRead(IRB);
+            delay(2);
+        }
+        cont = cont / 5;
+        Serial.print("  B:    ");
+        Serial.println(cont);
+        //delay(500);
+        return (PRETOB <= cont);
+
+    }
+    for (int i = 0; i <5; i++) {
+        cont += analogRead(IRA);
+        delay(2);
+    }
+    cont = cont / 5;
+    Serial.print("A:    ");
+    Serial.print(cont);
+    return (PRETOA <= cont);
 }
 int ir_read(){
     return 2*line(0) + line(1);

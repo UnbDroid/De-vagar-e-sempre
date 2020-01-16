@@ -52,23 +52,31 @@ void gira_direita(){
 }
 
 void motor(int a, int b){
-    if (a >= 0) {
+    if (a > 0) {
         analogWrite(ENA, a*PWM);
         digitalWrite(MA1, false);
         digitalWrite(MA2, true);
-    } else {
+    } else if (a < 0 ){
         analogWrite(ENA, -a*PWM);
         digitalWrite(MA1, true);
         digitalWrite(MA2, false);
+    } else {
+        digitalWrite(MA1, true);
+        digitalWrite(MA2, true);
+        
+
     }
-    if (b >= 0) {
+    if (b > 0) {
         analogWrite(ENB, b*PWM);
         digitalWrite(MB1, false);
         digitalWrite(MB2, true);
-    } else {
+    } else if (b < 0 ){
         analogWrite(ENB, -b*PWM);
         digitalWrite(MB1, true);
         digitalWrite(MB2, false);
+    } else {
+        digitalWrite(MB1, true);
+        digitalWrite(MB2, true);
     }
 }
 

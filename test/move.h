@@ -18,7 +18,7 @@ void tras();
 void gira_esquerda();
 void gira_direita();
 void liga(int, int); //Primeiro argumento 0 para ENA e 1 para ENB, segundo potência do pwm (0 - 255)
-void motor(int, int);
+void motor(int, int); //Primeiro argumento -> entrada da potência no M
 void teste_move(); //Função para testar as outras funções de move.h
 
 #endif

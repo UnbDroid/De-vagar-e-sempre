@@ -8,6 +8,8 @@ void setup() {
   Serial.begin(9600);
   setup_move();
   setup_ir();
+  pinMode(6, OUTPUT);
+  pinMode(5, OUTPUT);
 }
 
 
@@ -29,17 +31,29 @@ void loop() {
     switch (a) {
       case 0://Branco nos dois
         motor(80,80);
+        digitalWrite(6, LOW);
+        digitalWrite(5, LOW);
         break;
       case 1://Preto na direita
-        motor(150, -100);
+        //motor(0,0);
+        //delay(10);
+        motor(100, -85);
+        digitalWrite(6, LOW);
+        digitalWrite(5, HIGH);
         delay(3);
         break;
       case 2://Preto na esquerda
-        motor(-100, 150);
+        //motor(0,0);
+        //delay(20);
+        motor(-85, 100);
+        digitalWrite(6, HIGH);
+        digitalWrite(5, LOW);
         delay(3);
         break;
       case 3://Preto nos dois
         motor(140, 140);
+        digitalWrite(6, HIGH);
+        digitalWrite(5, HIGH);
         break;
       default: //Erroooooooowwwwwww!
         para();
