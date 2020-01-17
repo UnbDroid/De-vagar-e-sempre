@@ -10,7 +10,9 @@
 #define PWM 6/12 //Retificando o valor pwm para ficar no máximo 6V 
 
 #define RETO_TIME   50
-#define GIRO_TIME   40 //60
+#define GIRO_TIME   50 //60
+
+#define LADO 1
 
 
 void setup_move();
@@ -22,6 +24,7 @@ void gira_esquerda();
 void gira_direita();
 void liga(int, int); //Primeiro argumento 0 para ENA e 1 para ENB, segundo potência do pwm (0 - 255)
 void motor(int, int, int); //Primeiro argumento -> entrada da potência no M
+void desvio();
 void teste_move(); //Função para testar as outras funções de move.h
 
 #endif

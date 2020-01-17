@@ -4,7 +4,7 @@
 #define IRB A1 //A0 do sensor IR direita - analógico
 #define IRAd    26  //D0 do sensor IR esquerda - digital  
 
-#define PRETOA   500
+#define PRETOA   220
 #define PRETOB  220
 
 #define LEDA    6

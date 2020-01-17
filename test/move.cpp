@@ -1,5 +1,6 @@
 #include <move.h>
 #include <Arduino.h>
+#include <ir.h>
 
 void setup_move() {
     pinMode(ENA, OUTPUT);
@@ -100,6 +101,85 @@ void liga(int a, int pot){
         digitalWrite(MA2, true);
         digitalWrite(MB1, false);
         digitalWrite(MB2, true);
+
+}
+
+void desvio() {
+
+    if(!LADO){
+        motor(-250,250,GIRO_TIME);
+        motor(-100,100,600);
+        para(300);
+
+        motor(250, 250, RETO_TIME); 
+        motor(80,80, 1500);
+        para(200);
+        
+        motor(250, -250, GIRO_TIME);
+        motor(100,-100, 600);
+        para(300);
+
+        motor(250, 250, RETO_TIME); 
+        motor(80,80, 1500);
+        para(200);
+
+        
+        motor(250, -250, GIRO_TIME);
+        motor(100,-100, 500); //1000                l
+        para(300);
+
+
+        motor(260, 250, RETO_TIME);
+        motor(110, 85, 250);
+        para(150);
+
+        while(ir_read() != 2) {
+            motor(260, 250, RETO_TIME);
+            motor(110, 85, 10);
+            para(150);
+
+        }
+        
+    } else {
+        motor(250, -250, GIRO_TIME);
+        motor(100,-100, 600);
+        para(300);
+
+        motor(250, 250, RETO_TIME); 
+        motor(80,80, 1600);
+        para(200);
+        
+        motor(-250,250,GIRO_TIME);
+        motor(-100,100,550);
+        para(300);
+        
+
+        motor(250, 250, RETO_TIME); 
+        motor(80,80, 1500);
+        para(200);
+ 
+        motor(-250, 250, GIRO_TIME);
+        motor(-100,100, 450); //1000                l
+        para(300);
+
+        while(ir_read() != 1 && ir_read() != 3) {
+            motor(260, 250, RETO_TIME);
+            motor(110, 85, 10);
+            para(150);
+
+        }
+        while (ir_read() != 2)
+        { // Não está vendo o da esquerda
+            /* code */
+            motor(250, -250, GIRO_TIME);
+            motor(100,-100, 200);
+            para(150);
+        }
+        /*while(ir_read() != 2 && ir_read() != ) {
+
+        }*/
+
+    }
 
 }
 

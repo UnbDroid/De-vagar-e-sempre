@@ -10,22 +10,31 @@ void setup_ir() {
 int line(int a){
     int cont = 0;
     if(a){
-        for(int i = 0; i<5; i++) {
+        /*for(int i = 0; i<3; i++) {
             cont += analogRead(IRB);
-            delay(2);
+            //delay(2);
         }
-        cont = cont / 5;
+        cont = cont / 3;
         Serial.print("  B:    ");
         Serial.println(cont);
         //delay(500);
-        return (PRETOB <= cont);
+        return (PRETOB <= cont);*/
+        cont = analogRead(IRB);
+        Serial.print("  B:    ");
+        Serial.println(cont);
+        return(PRETOB <= cont);
 
-    }
-    for (int i = 0; i <5; i++) {
+    }/*
+    for (int i = 0; i <3; i++) {
         cont += analogRead(IRA);
-        delay(2);
+        //delay(2);
     }
-    cont = cont / 5;
+    cont = cont / 3;
+    Serial.print("A:    ");
+    Serial.print(cont);
+    return (PRETOA <= cont);
+*/
+    cont = analogRead(IRA);
     Serial.print("A:    ");
     Serial.print(cont);
     return (PRETOA <= cont);
