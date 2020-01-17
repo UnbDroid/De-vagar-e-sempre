@@ -57,13 +57,9 @@ uint8_t mask(unsigned long* readings_us)
   
 }
 
-byte read_us() 
+void read_us(unsigned long* readings_us) 
 {
-    #ifdef ALFA
-        static float filtered_us[4] = {0.0,0.0,0.0,0.0}; 
-    #else
-        unsigned long readings_us[4]={0,0,0,0}; 
-    #endif
+    static float filtered_us[2] = {0.0,0.0}; 
     
     #ifdef ALFA
     for (uint8_t j = 0; j < (uint8_t)(1/(1-ALFA))+1; j++)
@@ -86,11 +82,12 @@ byte read_us()
         mask(readings_us);
     #endif
 
+    Serial.print("Leitura 1: ");
     Serial.println(readings_us[0]);
+    Serial.print("Leitura 2: ");
+    Serial.println(readings_us[1]);
 
     // se alguma das leiturass é zero == 200
-
-    return us_byte;
 }
 
 void teste_us() {

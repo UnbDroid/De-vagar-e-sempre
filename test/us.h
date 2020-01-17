@@ -31,7 +31,7 @@ uint8_t mask(unsigned long* readings_us);
 
 
 void setup_us();
-byte read_us(); //WARNING: TO GUARANTEE BEST RESULTS,  29ms should be the shortest delay between pings (keep the delay inside the loop)
+void read_us(unsigned long*); //WARNING: TO GUARANTEE BEST RESULTS,  29ms should be the shortest delay between pings (keep the delay inside the loop)
 void teste_us();
 
 #endif
