@@ -82,14 +82,20 @@ void read_us(unsigned long* readings_us)
         mask(readings_us);
     #endif
 
-    Serial.print("Leitura 1: ");
+   /* Serial.print("Leitura 1: ");
     Serial.println(readings_us[0]);
     Serial.print("Leitura 2: ");
     Serial.println(readings_us[1]);
-
+*/
     // se alguma das leiturass é zero == 200
 }
 
-void teste_us() {
+void teste_us(unsigned long *valUS) {
+    read_us(valUS);
 
+    Serial.print("Leitura 1 main: ");
+    Serial.print(valUS[0]);
+    Serial.print("  Leitura 2 main: ");
+    Serial.println(valUS[1]);
+    delay(2000);
 }
