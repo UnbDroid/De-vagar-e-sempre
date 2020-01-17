@@ -3,6 +3,8 @@
 
 void setup_ir() {
     pinMode(IRA, INPUT);
+    pinMode(LEDA, OUTPUT);
+    pinMode(LEDB, OUTPUT);
 }
 
 int line(int a){
@@ -31,6 +33,11 @@ int line(int a){
 int ir_read(){
     return 2*line(0) + line(1);
 }
+void led(bool a, bool b) {
+    digitalWrite(LEDA, a);
+    digitalWrite(LEDB, b);
+}
+
 void teste_ir(){
     for(int i = 0; i <10; i++){
         Serial.println(i);

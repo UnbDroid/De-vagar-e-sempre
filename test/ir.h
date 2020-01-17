@@ -5,7 +5,10 @@
 #define IRAd    26  //D0 do sensor IR esquerda - digital  
 
 #define PRETOA   500
-#define PRETOB  180
+#define PRETOB  220
+
+#define LEDA    6
+#define LEDB    5
 
 void setup_ir();
 
@@ -13,6 +16,8 @@ int line(int);
 /*recebe 0 para o IRA ou qualquer outro para IRB e retorna 1 se lê preto ou 0 se lê branco, 
 de acordo com a constante definida PRETO.
 */
+
+void led(bool, bool);
 
 int ir_read();
 

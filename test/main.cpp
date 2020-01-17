@@ -3,62 +3,51 @@
 #include <ir.h>
 
 bool inicio = false;
+static int prev_a, a = 1;
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   setup_move();
   setup_ir();
-  pinMode(6, OUTPUT);
-  pinMode(5, OUTPUT);
+  para(1000);
 }
 
-
 void loop() {
-  //teste_move();
-  /*frente();
-  delay(3000);
-  para();
-  delay(3000);*/
-  //teste_ir();
-  if (!inicio) {
-    delay(1000);
-    frente(250);
-    delay(70);
-    inicio = true;
-  } else {
-    int a = ir_read();
-    Serial.println(a);
-    switch (a) {
-      case 0://Branco nos dois
-        motor(80,80);
-        digitalWrite(6, LOW);
-        digitalWrite(5, LOW);
-        break;
-      case 1://Preto na direita
-        //motor(0,0);
-        //delay(10);
-        motor(100, -85);
-        digitalWrite(6, LOW);
-        digitalWrite(5, HIGH);
-        delay(3);
-        break;
-      case 2://Preto na esquerda
-        //motor(0,0);
-        //delay(20);
-        motor(-85, 100);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, LOW);
-        delay(3);
-        break;
-      case 3://Preto nos dois
-        motor(140, 140);
-        digitalWrite(6, HIGH);
-        digitalWrite(5, HIGH);
-        break;
-      default: //Erroooooooowwwwwww!
-        para();
-        delay(1000);
-        break;
-   }
+  prev_a = a;
+  a = ir_read();
+  Serial.println(a);
+  switch (a) {
+    case 0: //Branco nos dois
+      led(0, 0);
+      //if (prev_a != 0) 
+      motor(260, 250, RETO_TIME);
+      motor(110, 85, 10);
+      para(300);
+      break;
+    case 1: //Preto na direita
+      led(0, 1);
+      para(300);
+      //if(ir_read() != 1) break;
+      motor(250, -250, GIRO_TIME);
+      motor(140,-90, GIRO_TIME);
+      para(200);
+      break;
+    case 2: //Preto na esquerda
+      led(1, 0);
+      para(300);
+      //if(ir_read() != 2) break;
+      motor(-250, 250, GIRO_TIME);
+      motor(-90,140,GIRO_TIME);
+      para(200);
+      break;
+    case 3: //Preto nos dois
+      led(1, 1);
+      //para(1000);
+      break;
+    default:
+      motor(0, 0, 3000);
+      break;
   }
+
 }

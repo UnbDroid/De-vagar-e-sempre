@@ -29,11 +29,12 @@ void tras(){
     digitalWrite(MB2, false);
 }
 
-void para(){
+void para(int t){
     digitalWrite(MA1, false);
     digitalWrite(MA2, false);
     digitalWrite(MB1, false);
     digitalWrite(MB2, false);
+    delay(t);
 }
 
 void gira_esquerda(){
@@ -51,7 +52,7 @@ void gira_direita(){
 
 }
 
-void motor(int a, int b){
+void motor(int a, int b,  int t){
     if (a > 0) {
         analogWrite(ENA, a*PWM);
         digitalWrite(MA1, false);
@@ -61,10 +62,10 @@ void motor(int a, int b){
         digitalWrite(MA1, true);
         digitalWrite(MA2, false);
     } else {
+        analogWrite(ENA, a*PWM);
         digitalWrite(MA1, true);
         digitalWrite(MA2, true);
         
-
     }
     if (b > 0) {
         analogWrite(ENB, b*PWM);
@@ -75,10 +76,14 @@ void motor(int a, int b){
         digitalWrite(MB1, true);
         digitalWrite(MB2, false);
     } else {
+        analogWrite(ENB, b*PWM);
         digitalWrite(MB1, true);
         digitalWrite(MB2, true);
     }
+    delay (t);
 }
+
+
 
 void liga(int a, int pot){ 
     if (a){
@@ -89,6 +94,7 @@ void liga(int a, int pot){
         analogWrite(ENB, 0*PWM);
         analogWrite(ENA, pot*PWM);
 
+    motor(250, 250, 60);
     }
         digitalWrite(MA1, false);
         digitalWrite(MA2, true);
@@ -98,20 +104,20 @@ void liga(int a, int pot){
 }
 
 void teste_move(){
-    frente(210);
-    delay(3000);
-    para();
-    delay(1000);
-    tras();
-    delay(3000);
-    para();
-    delay(1000);
-    gira_esquerda();
-    delay(3000);
-    para();
-    delay(1000);
-    gira_direita();
-    delay(3000);
-    para();
-    delay(1000);
+
+  motor(250, 250, RETO_TIME); 
+  motor(80,80, 1000);
+  para(200); 
+
+  motor(-250, -250, RETO_TIME);
+  motor(-80, -80, 1000);
+  para(2000);
+
+  motor(-250, 250, GIRO_TIME);
+  motor(-100, 100, 1000);
+  para(300);
+
+  motor(250, -250, GIRO_TIME);
+  motor(100,-100, 1000);
+  para(2000);
 }
