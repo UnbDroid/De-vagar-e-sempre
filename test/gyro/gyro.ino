@@ -1,110 +1,67 @@
-//This code is to use with L3G4200 triple axis gyro
-//Modified by SurtrTech
+/*
+The sensor outputs provided by the library are the raw 16-bit values
+obtained by concatenating the 8-bit high and low gyro data registers.
+They can be converted to units of dps (degrees per second) using the
+conversion factors specified in the datasheet for your particular
+device and full scale setting (gain).
+Example: An L3GD20H gives a gyro X axis reading of 345 with its
+default full scale setting of +/- 245 dps. The So specification
+in the L3GD20H datasheet (page 10) states a conversion factor of 8.75
+mdps/LSB (least significant bit) at this FS setting, so the raw
+reading of 345 corresponds to 345 * 8.75 = 3020 mdps = 3.02 dps.
+*/
 
 #include <Wire.h>
+#include "L3G.h"
 
-#define CTRL_REG1 0x20
-#define CTRL_REG2 0x21
-#define CTRL_REG3 0x22
-#define CTRL_REG4 0x23
-#define CTRL_REG5 0x24
+L3G gyro;
 
-int L3G4200D_Address = 105; //I2C address of the L3G4200D
+// Timers
+unsigned long timer = 0;
+float timeStep = 0.01;
 
-int x;
-int y;
-int z;
+float pitch = 0;
+float roll = 0;
+float yaw = 0;
 
-void setup(){
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
 
-Wire.begin();
- Serial.begin(9600);
+  if (!gyro.init())
+  {
+    Serial.println("Failed to autodetect gyro type!");
+    while (1);
+  }
 
-Serial.println("starting up L3G4200D");
- setupL3G4200D(2000); // Configure L3G4200 - 250, 500 or 2000 deg/sec
-
-delay(1500); //wait for the sensor to be ready 
+  gyro.enableDefault();
 }
 
-void loop(){
- getGyroValues(); // This will update x, y, and z with new values
+void loop() {
+  timer = millis();
+  gyro.read();
 
-Serial.print("X:");
- Serial.print(x); //Here you can do some operations befor you use that value
- //For example set it on a surface and substract or add numbers to get 0,0,0 if you want that position to be your reference
- Serial.print(" Y:");
- Serial.print(y);
+  gyro.vector_normalize(&gyro.g);
 
-Serial.print(" Z:");
- Serial.println(z);
+  // Calculate Pitch, Roll and Yaw
+  pitch = pitch + gyro.g.x * timeStep;
+  roll = roll + gyro.g.x * timeStep;
+  yaw = yaw + gyro.g.z * timeStep;
+  
+  // Output raw
+  Serial.print(" Pitch = ");
+  Serial.print(pitch);
+  Serial.print(" Roll = ");
+  Serial.print(roll);  
+  Serial.print(" Yaw = ");
+  Serial.println(yaw);
 
-delay(100); //Just here to slow down the serial to make it more readable
+  if (pitch > 40 || roll > 40 || yaw > 40){
+      Serial.print("Got there");
+  }
+
+  // Wait to full timeStep period
+  delay((timeStep*1000));
 }
 
-void getGyroValues(){
 
-byte xMSB = readRegister(L3G4200D_Address, 0x29);
- byte xLSB = readRegister(L3G4200D_Address, 0x28);
- x = ((xMSB << 8) | xLSB);
-
-byte yMSB = readRegister(L3G4200D_Address, 0x2B);
- byte yLSB = readRegister(L3G4200D_Address, 0x2A);
- y = ((yMSB << 8) | yLSB);
-
-byte zMSB = readRegister(L3G4200D_Address, 0x2D);
- byte zLSB = readRegister(L3G4200D_Address, 0x2C);
- z = ((zMSB << 8) | zLSB);
-}
-
-int setupL3G4200D(int scale){
- //From Jim Lindblom of Sparkfun's code
-
-// Enable x, y, z and turn off power down:
- writeRegister(L3G4200D_Address, CTRL_REG1, 0b00001111);
-
-// If you'd like to adjust/use the HPF, you can edit the line below to configure CTRL_REG2:
- writeRegister(L3G4200D_Address, CTRL_REG2, 0b00000000);
-
-// Configure CTRL_REG3 to generate data ready interrupt on INT2
- // No interrupts used on INT1, if you'd like to configure INT1
- // or INT2 otherwise, consult the datasheet:
- writeRegister(L3G4200D_Address, CTRL_REG3, 0b00001000);
-
-// CTRL_REG4 controls the full-scale range, among other things:
-
-if(scale == 250){
- writeRegister(L3G4200D_Address, CTRL_REG4, 0b00000000);
- }else if(scale == 500){
- writeRegister(L3G4200D_Address, CTRL_REG4, 0b00010000);
- }else{
- writeRegister(L3G4200D_Address, CTRL_REG4, 0b00110000);
- }
-
-// CTRL_REG5 controls high-pass filtering of outputs, use it
- // if you'd like:
- writeRegister(L3G4200D_Address, CTRL_REG5, 0b00000000);
-}
-
-void writeRegister(int deviceAddress, byte address, byte val) {
- Wire.beginTransmission(deviceAddress); // start transmission to device 
- Wire.write(address); // send register address
- Wire.write(val); // send value to write
- Wire.endTransmission(); // end transmission
-}
-
-int readRegister(int deviceAddress, byte address){
-
-int v;
- Wire.beginTransmission(deviceAddress);
- Wire.write(address); // register to read
- Wire.endTransmission();
-
-Wire.requestFrom(deviceAddress, 1); // read a byte
-
-while(!Wire.available()) {
- // waiting
- }
-
-v = Wire.read();
- return v;
-}
