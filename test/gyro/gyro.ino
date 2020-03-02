@@ -1,67 +1,100 @@
-/*
-The sensor outputs provided by the library are the raw 16-bit values
-obtained by concatenating the 8-bit high and low gyro data registers.
-They can be converted to units of dps (degrees per second) using the
-conversion factors specified in the datasheet for your particular
-device and full scale setting (gain).
-Example: An L3GD20H gives a gyro X axis reading of 345 with its
-default full scale setting of +/- 245 dps. The So specification
-in the L3GD20H datasheet (page 10) states a conversion factor of 8.75
-mdps/LSB (least significant bit) at this FS setting, so the raw
-reading of 345 corresponds to 345 * 8.75 = 3020 mdps = 3.02 dps.
-*/
+/*------------------------------------------ Gyroscope Functions ---------------------------------------------*/
 
-#include <Wire.h>
-#include "L3G.h"
+// Comments:
+// Here we have the Turn function and the angular position calculation.
 
-L3G gyro;
+// Usage:
+// To read the current angular position just call UpdateGyro, beware that this function shouldn't be called 
+// more than once in 20 milli seconds since it time step is 20.
+// The Turn function receives the angle disired. Positive turns right and negative turns left.
 
-// Timers
-unsigned long timer = 0;
-float timeStep = 0.01;
+// Gyro lib
+#include "MPU9250.h"
 
-float pitch = 0;
-float roll = 0;
-float yaw = 0;
+// Iteration step in milli seconds
+#define TIME_STEP 20
+
+// Set the turning speed 
+#define Turn_Tension 3
+
+// An MPU9250 object with the MPU-9250 sensor on I2C bus 0 with address 0x68
+MPU9250 gyro(Wire,0x68);
+int status;
+float degreeX = 0;
+float degreeY = 0;
+float degreeZ = 0;
+
+/*void Turn(float degrees) {
+  
+  static unsigned long now;
+  static unsigned long last_update = 0;
+
+  float offset = degreeZ;
+  
+  if (degrees > 0) {
+    Move_Right_Motor(-Turn_Tension);
+    Move_Left_Motor(Turn_Tension);
+    while(degreeZ < (offset + degrees)){
+      now = millis();
+      if (now - last_update >= TIME_STEP) {
+        UpdateGyro();
+        last_update = now;
+      }
+    }
+
+  } else {
+    Move_Right_Motor(Turn_Tension);
+    Move_Left_Motor(-Turn_Tension);
+    while(degreeZ > (offset + degrees)){
+      now = millis();
+      if (now - last_update >= TIME_STEP) {
+        UpdateGyro();
+        last_update = now;
+      }
+    }
+  }
+  StopMotors();
+}*/
+
+// Gets gyro's raw readings (rad/s) and integrates them into angles (rad).
+// Angles are also converted from rad to degrees. 
+void UpdateGyro() {
+  gyro.readSensor();
+  degreeX += (gyro.getGyroX_rads() * TIME_STEP * 180) / (1000 * PI);
+  degreeY += (gyro.getGyroY_rads() * TIME_STEP * 180) / (1000 * PI);
+  degreeZ += (gyro.getGyroZ_rads() * TIME_STEP * 180) / (1000 * PI);
+}
+
+
+// Gyro setup function
+void StartGyro() {
+  status = gyro.begin();
+  if (status < 0)
+    Serial.println("IMU initialization unsuccessful");
+}
 
 void setup() {
-  Serial.begin(9600);
-  Wire.begin();
-
-  if (!gyro.init())
-  {
-    Serial.println("Failed to autodetect gyro type!");
-    while (1);
-  }
-
-  gyro.enableDefault();
+  Serial.begin(115200);
+  while(!Serial);
+  StartGyro();
 }
 
 void loop() {
-  timer = millis();
-  gyro.read();
 
-  gyro.vector_normalize(&gyro.g);
+  unsigned long now,last_update = 0;
 
-  // Calculate Pitch, Roll and Yaw
-  pitch = pitch + gyro.g.x * timeStep;
-  roll = roll + gyro.g.x * timeStep;
-  yaw = yaw + gyro.g.z * timeStep;
-  
-  // Output raw
-  Serial.print(" Pitch = ");
-  Serial.print(pitch);
-  Serial.print(" Roll = ");
-  Serial.print(roll);  
-  Serial.print(" Yaw = ");
-  Serial.println(yaw);
-
-  if (pitch > 40 || roll > 40 || yaw > 40){
-      Serial.print("Got there");
+  while(1){
+    now = millis();
+    if(now - last_update > 20){
+      UpdateGyro();
+      Serial.print("X = ");
+      Serial.print(degreeX);
+      Serial.print("Y = ");
+      Serial.print(degreeY);
+      Serial.print("Z = ");
+      Serial.println(degreeZ);
+      last_update = now;
+    }
   }
-
-  // Wait to full timeStep period
-  delay((timeStep*1000));
 }
-
 
