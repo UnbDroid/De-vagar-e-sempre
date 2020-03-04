@@ -1,6 +1,7 @@
 #include <move.h>
 #include <Arduino.h>
-#include <ir.h>
+#include <Sensors/ir.h>
+#include <Sensors/gyro.h>
 
 void setup_move() {
     pinMode(ENA, OUTPUT);
@@ -21,6 +22,10 @@ void frente(int pot){
     digitalWrite(MA2, true);
     digitalWrite(MB1, false);
     digitalWrite(MB2, true);
+}
+
+void segue_reto(int pot){
+
 }
 
 void tras(){

@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <move.h>
-#include <ir.h>
-#include <us.h>
+#include <Sensors/ir.h>
+#include <Sensors/us.h>
 
 //bool inicio = false;
 static int prev_a, a = 1, cont = 5;
