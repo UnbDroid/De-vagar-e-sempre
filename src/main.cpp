@@ -2,6 +2,7 @@
 #include <move.h>
 #include <Sensors/ir.h>
 #include <Sensors/us.h>
+#include <Sensors/gyro.h>
 
 //bool inicio = false;
 static int prev_a, a = 1, cont = 5;
@@ -14,6 +15,7 @@ void setup()
   setup_ir();
   para(1000);
   setup_us();
+  startGyro();
 }
 
 void loop() {
