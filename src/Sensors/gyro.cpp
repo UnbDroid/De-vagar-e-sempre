@@ -24,6 +24,10 @@ void startGyro() {
   status = gyro->begin();
 }
 
+float getGyro(){
+  return degreeY;
+}
+
 // Prints current angle on serial monitor
 void printGyro() {
     updateGyro();
