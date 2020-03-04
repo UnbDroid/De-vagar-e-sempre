@@ -15,6 +15,8 @@
 
 #define RETO_TIME   50
 #define GIRO_TIME   50 //60
+#define GIRO_PWM    80
+#define TRANCO_PWM    250
 
 #define LADO 1
 
@@ -27,9 +29,11 @@ void para(int);
 void tras();
 void gira_esquerda();
 void gira_direita();
+void girar_angulo(float);
 void liga(int, int); //Primeiro argumento 0 para ENA e 1 para ENB, segundo potência do pwm (0 - 255)
 void motor(int, int, int); //Primeiro argumento -> entrada da potência no M
 void desvio();
 void teste_move(); //Função para testar as outras funções de move.h
+void teste_giro(); //Função para testar as outras funções de move.h
 
 #endif

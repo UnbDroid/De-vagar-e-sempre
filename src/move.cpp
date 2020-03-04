@@ -58,6 +58,30 @@ void gira_direita(){
 
 }
 
+void girar_angulo(float angle){
+    float ang_anterior = getGyro();
+    int mult = 1;
+    float offset = 0;
+
+    if(angle < 0)
+        mult = -1;
+
+    if(ang_anterior + angle < 0){
+        offset = 360;
+    }
+
+    if(ang_anterior + angle > 360){
+        offset = - 360;
+    }
+
+    motor(- TRANCO_PWM * mult, TRANCO_PWM * mult, RETO_TIME);
+    motor(- GIRO_PWM * mult, GIRO_PWM * mult, 0);
+    while (getGyro() - (ang_anterior + offset) < angle){
+        delay(20);
+    }
+    para(100);
+}
+
 void motor(int a, int b,  int t){
     if (a > 0) {
         analogWrite(ENA, a*PWM);
@@ -205,4 +229,12 @@ void teste_move(){
   motor(250, -250, GIRO_TIME);
   motor(100,-100, 1000);
   para(2000);
+}
+
+void teste_giro(){
+    girar_angulo(90);
+    girar_angulo(-90);
+    girar_angulo(-90);
+    girar_angulo(180);
+    girar_angulo(270);
 }
