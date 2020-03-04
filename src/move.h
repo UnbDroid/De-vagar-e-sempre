@@ -9,6 +9,10 @@
 
 #define PWM 6/12 //Retificando o valor pwm para ficar no máximo 6V 
 
+#define KP
+#define KI
+#define KD
+
 #define RETO_TIME   50
 #define GIRO_TIME   50 //60
 
@@ -18,6 +22,7 @@
 void setup_move();
 
 void frente(int); //Recebe inteiro para pwm (0 - 255)
+void segue_reto(int); //Move com PID
 void para(int);
 void tras();
 void gira_esquerda();
