@@ -24,8 +24,18 @@ void frente(int pot){
     digitalWrite(MB2, true);
 }
 
-void segue_reto(int pot){
+void segue_reto(int pot[] , int *err, float delta, float angulo){
+    *err = angulo - getGyro();
 
+    pot[0] -= *err * KP;
+    pot[1] += *err * KP;
+
+    if(pot[0] < 120) pot[0] = 120;
+    if(pot[1] < 120) pot[1] = 120;
+    if(pot[0] > 250) pot[0] = 250;
+    if(pot[1] > 250) pot[1] = 250;
+
+    motor(pot[0], pot[1], 20);
 }
 
 void tras(){
@@ -59,7 +69,7 @@ void gira_direita(){
 }
 
 void girar_angulo(float angle){
-    float ang_anterior = getGyro();
+    float ang_anterior = getGyro(), ang_atual;
     int mult = 1;
     float offset = 0;
 
@@ -75,9 +85,21 @@ void girar_angulo(float angle){
     }
 
     motor(- TRANCO_PWM * mult, TRANCO_PWM * mult, RETO_TIME);
-    motor(- GIRO_PWM * mult, GIRO_PWM * mult, 0);
-    while (getGyro() - (ang_anterior + offset) < angle){
-        delay(20);
+    motor(- MEDIO_PWM * mult, MEDIO_PWM * mult, 10);
+    ang_atual = getGyro();
+    if(mult > 0){
+        while (ang_atual  < angle + ang_anterior){
+            delay(20);
+            printGyro();
+            ang_atual = getGyro();
+        }
+    }
+    else{
+        while (ang_atual  > angle + ang_anterior){
+            delay(20);
+            printGyro();
+            ang_atual = getGyro();
+        }
     }
     para(100);
 }
@@ -233,8 +255,15 @@ void teste_move(){
 
 void teste_giro(){
     girar_angulo(90);
+    delay(1000);
     girar_angulo(-90);
+    delay(1000);
     girar_angulo(-90);
+    delay(1000);
+    girar_angulo(90);
+    delay(1000);
     girar_angulo(180);
-    girar_angulo(270);
+    delay(1000);
+    girar_angulo(-180);
+    delay(1000);
 }
