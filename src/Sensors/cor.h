@@ -10,7 +10,7 @@
 
 #define MEDIANA 7
 #define ALPHA 0.01
-#define DP_BRANCO 15
+#define DP_BRANCO 30
 #define M_BRANCO 250
 #define M_PRETO 170
 #define DP_PRETO 10

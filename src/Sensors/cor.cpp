@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "cor.h"
+#include "move.h"
 
 static double cores[3] = {0,0,0};
 static int medidas[MEDIANA] = {0,0,0,0,0,0,0};
@@ -89,10 +90,18 @@ int cor(){
   le_sensor(TCS_OUT);
   switch(media_dp()) {
     case OUTRA_COR:
-        digitalWrite(led_B, LOW);
-        digitalWrite(led_G, LOW);
-        digitalWrite(led_R, HIGH);
-        retorno = OUTRA_COR;
+        para(100);
+        motor(250, 250, RETO_TIME);
+        para(100);
+        if(media_dp() == OUTRA_COR){
+          retorno = OUTRA_COR;
+          digitalWrite(led_B, LOW);
+          digitalWrite(led_G, LOW);
+          digitalWrite(led_R, HIGH);
+        } else {
+          retorno =  BRANCO;
+          }
+        
         break;
     case BRANCO:
         digitalWrite(led_B, HIGH);

@@ -12,7 +12,7 @@ int cont_b_b;
 int controle[2];
 int err_controle;
 float last_angle;
-int cor_vista;
+//int cor_vista;
 
 void setup()
 {
@@ -30,7 +30,7 @@ void setup()
 }
 
 void loop() {
-  cor_vista = cor();
+  //cor_vista = cor();
   cont--;
   if(!cont) {
     read_us(val_us);
@@ -119,12 +119,13 @@ void loop() {
   else{
     para(100);
     a = ir_read();
-    cor_vista = cor();
+    //cor_vista = cor();
     motor(TRANCO_PWM, TRANCO_PWM, 5);
-    while(a == 0 || cor_vista != OUTRA_COR){
+    //while(a == 0 || cor_vista != OUTRA_COR){
+    while(a == 0){
       segue_reto(controle, &err_controle, 0, last_angle);
       a = ir_read();
-      cor_vista = cor();
+      //cor_vista = cor();
       read_us(val_us);
       if(val_us[0] <= 20 && val_us[0] != 0){
         para(20);
@@ -134,3 +135,7 @@ void loop() {
     cont_b_b = 0;
   }
 }
+/*
+void loop () {
+  teste_cor();
+}*/
