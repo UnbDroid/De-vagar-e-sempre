@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <cor.h>
 
+static double cores[3] = {0,0,0};
+static int medidas[MEDIANA] = {0,0,0,0,0,0,0};
+
 void setup_cor(){
   pinMode(TCS_S2, OUTPUT);
   pinMode(TCS_S3, OUTPUT);
@@ -8,10 +11,9 @@ void setup_cor(){
   pinMode(led_G, OUTPUT);
   pinMode(led_R, OUTPUT);
   pinMode(led_B, OUTPUT);
-  Serial.begin(9600);
 }
 
-int mediana(int *medidas) {
+int mediana() {
   float maximo = 0;
   int indice;
   for (int i = 0; i < 5 ; ++i)  {
@@ -30,7 +32,9 @@ int mediana(int *medidas) {
   }
   return medidas[3];
 }
+
 void le_sensor(int tcs){
+
   //Vermelho
   digitalWrite(TCS_S2,LOW);
   digitalWrite(TCS_S3,LOW);
@@ -38,7 +42,7 @@ void le_sensor(int tcs){
   for(int i=1; i<MEDIANA; i++){
     medidas[i] = pulseIn (TCS_OUT, digitalRead(TCS_OUT) == HIGH ? LOW : HIGH);
   }
-  cores[0] = (ALPHA)*cores[0] + (1 - ALPHA)*mediana(medidas);
+  cores[0] = (ALPHA)*cores[0] + (1 - ALPHA)*mediana();
 
   //Azul
   digitalWrite(TCS_S3,HIGH);
@@ -46,7 +50,7 @@ void le_sensor(int tcs){
   for (int i = 0; i < MEDIANA; ++i) {
     medidas[i] = pulseIn(TCS_OUT,digitalRead(TCS_OUT) == HIGH ? LOW : HIGH);
   }
-  cores[2] = (ALPHA)*cores[2] + (1 - ALPHA)*mediana(medidas);
+  cores[2] = (ALPHA)*cores[2] + (1 - ALPHA)*mediana();
 
   //Verde
   digitalWrite(TCS_S2,HIGH);
@@ -54,7 +58,8 @@ void le_sensor(int tcs){
   for (int i = 0; i < MEDIANA ; ++i) {
     medidas[i] = pulseIn(TCS_OUT,digitalRead(TCS_OUT) == HIGH ? LOW : HIGH);
   }
-  cores[1] = (ALPHA)*cores[1] + (1 - ALPHA)*mediana(medidas);
+  cores[1] = (ALPHA)*cores[1] + (1 - ALPHA)*mediana();
+
   cores[0] = 8000/ cores[0];
   cores[1] = 8000/ cores[1];
   cores[2] = 8000/ cores[2];
@@ -79,29 +84,34 @@ int media_dp () {
   }
 }
 
-void teste_cor(){
+void cor(){
   le_sensor(TCS_OUT);
+  switch(media_dp()) {
+    case OUTRA_COR:
+        digitalWrite(led_B, LOW);
+        digitalWrite(led_G, LOW);
+        digitalWrite(led_R, HIGH);
+        break;
+    case BRANCO:
+        digitalWrite(led_B, HIGH);
+        digitalWrite(led_G, HIGH);
+        digitalWrite(led_R, HIGH);
+        break;
+    case PRETO:
+        digitalWrite(led_B, HIGH);
+        digitalWrite(led_G, LOW);
+        digitalWrite(led_R, LOW);
+        break;
+  }
+
+}
+
+void teste_cor(){
+  cor();
   Serial.print("R = ");
   Serial.println(cores[0]);
   Serial.print("G = ");
   Serial.println(cores[1]);
   Serial.print("B = ");
   Serial.println(cores[2]);
-  switch(media_dp()) {
-    case 0:
-        digitalWrite(led_B, LOW);
-        digitalWrite(led_G, LOW);
-        digitalWrite(led_R, HIGH);
-        break;
-    case 1:
-        digitalWrite(led_B, HIGH);
-        digitalWrite(led_G, HIGH);
-        digitalWrite(led_R, HIGH);
-        break;
-    case 2:
-        digitalWrite(led_B, LOW);
-        digitalWrite(led_G, HIGH);
-        digitalWrite(led_R, LOW);
-        break;
-  }
 }
