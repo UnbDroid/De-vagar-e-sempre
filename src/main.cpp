@@ -57,7 +57,7 @@ void loop() {
   a = ir_read();
   last_angle = getGyro();
   Serial.println(a);
-  if(cont_b_b < 2){
+  if(cont_b_b < 4){
     switch (a) {
       case 0: //Branco nos dois
         ++cont_b_b;
@@ -68,6 +68,7 @@ void loop() {
         para(300);
         break;
       case 1: //Preto na direita
+        cont_b_b = 0;
         led(0, 1);
         para(300);
         //if(ir_read() != 1) break;
@@ -76,6 +77,7 @@ void loop() {
         para(200);
         break;
       case 2: //Preto na esquerda
+        cont_b_b = 0;
         led(1, 0);
         para(200);
         //if(ir_read() != 2) break;
@@ -84,6 +86,7 @@ void loop() {
         para(200);
         break;
       case 3: //Preto nos dois
+        cont_b_b = 0;
         led(1, 1);
         if(prev_a == 1) {
 
