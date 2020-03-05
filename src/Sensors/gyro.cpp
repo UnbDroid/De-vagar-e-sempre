@@ -13,15 +13,19 @@ void updateGyro() {
   degreeY += (gyro->getGyroY_rads() * TIME_STEP * 180) / (1000 * PI);
   
   // Corrections
-  if(degreeY < 0)
+  /*if(degreeY < 0)
     degreeY += 360;
   else if (degreeY > 360)
-    degreeY -= 360;
+    degreeY -= 360;*/
 }
 
 // Gyro setup function
 void startGyro() {
   status = gyro->begin();
+}
+
+void resetGyro(){
+  degreeY = 0;
 }
 
 float getGyro(){
@@ -32,5 +36,5 @@ float getGyro(){
 void printGyro() {
     updateGyro();
     Serial.print("angle in Y: ");
-    Serial.print(degreeY);
+    Serial.println(degreeY);
 }
