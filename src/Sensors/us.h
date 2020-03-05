@@ -8,10 +8,10 @@
 #define SONAR_NUM 2 
 #define MAX_DISTANCE 200 // Maximum distance (in cm) to ping.
 
-#define US1_ECHO A2 // us central (ECHO) - analógico
-#define US1_TRIG A3 // us central (TRIG) - analógico
-#define US2_ECHO A4 // us lateral (ECHO) - analógico
-#define US2_TRIG A5 // us lateral (TRIG) - analógico
+#define US_FRENTE_ECHO A3 // us central (ECHO) - analógico
+#define US_FRENTE_TRIG A4 // us central (TRIG) - analógico
+#define US_LADO_ECHO A8 // us lateral (ECHO) - analógico
+#define US_LADO_TRIG A9 // us lateral (TRIG) - analógico
 
 #ifdef ALFA
 float low_pass_filter(float last_val, float new_val);

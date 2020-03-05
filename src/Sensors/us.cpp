@@ -4,8 +4,8 @@
 uint8_t us_byte;
 
 NewPing sonar[SONAR_NUM] = {   
-    NewPing(US1_TRIG, US1_ECHO, MAX_DISTANCE), 
-    NewPing(US2_TRIG, US2_ECHO, MAX_DISTANCE),
+    NewPing(US_FRENTE_TRIG, US_FRENTE_ECHO, MAX_DISTANCE), 
+    NewPing(US_LADO_TRIG, US_LADO_ECHO, MAX_DISTANCE),
 };
 
 #ifdef ALFA

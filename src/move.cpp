@@ -12,6 +12,11 @@ void setup_move() {
     pinMode(MB2, OUTPUT);
     analogWrite(ENA, 200*PWM);
     analogWrite(ENB, 200*PWM);
+    now= 0;
+    last_update = 0;
+    desvia_pot[0] = MEDIO_PWM;
+    desvia_pot[1] = MEDIO_PWM;
+    err_desvia = 0;
 }
 
 void frente(int pot){
@@ -193,33 +198,46 @@ void desvio() {
         }
         
     } else {
-        motor(250, -250, GIRO_TIME);
-        motor(100,-100, 600);
-        para(300);
+        girar_angulo(90);
 
-        motor(250, 250, RETO_TIME); 
-        motor(80,80, 1600);
-        para(200);
-        
-        motor(-250,250,GIRO_TIME);
-        motor(-100,100,550);
-        para(300);
-        
-
-        motor(250, 250, RETO_TIME); 
-        motor(80,80, 1500);
-        para(200);
- 
-        motor(-250, 250, GIRO_TIME);
-        motor(-100,100, 450); //1000                l
-        para(300);
-
-        while(ir_read() != 1 && ir_read() != 3) {
-            motor(260, 250, RETO_TIME);
-            motor(110, 85, 10);
-            para(150);
-
+        now = millis();
+        float at_angle = getGyro();
+        motor(TRANCO_PWM, TRANCO_PWM, 5);
+        while(now - last_update > 1600){
+            updateGyro();
+            segue_reto(&desvia_pot, &err_desvia, 0, at_angle);
+            last_update = now;
         }
+        desvia_pot[0] = MEDIO_PWM;
+        desvia_pot[1] = MEDIO_PWM;
+        err_desvia = 0;
+        
+        girar_angulo(-90);
+
+        now = millis();
+        at_angle = getGyro();
+        motor(TRANCO_PWM, TRANCO_PWM, 5);
+        while(now - last_update > 1500){
+            updateGyro();
+            segue_reto(&desvia_pot, &err_desvia, 0, at_angle);
+            last_update = now;
+        }
+        desvia_pot[0] = MEDIO_PWM;
+        desvia_pot[1] = MEDIO_PWM;
+        err_desvia = 0;
+ 
+        girar_angulo(-90);
+
+        at_angle = getGyro();
+        motor(TRANCO_PWM, TRANCO_PWM, 5);
+        while(ir_read() != 1 && ir_read() != 3) {
+            updateGyro();
+            segue_reto(&desvia_pot, &err_desvia, 0, at_angle);
+            para(150);
+        }
+        desvia_pot[0] = MEDIO_PWM;
+        desvia_pot[1] = MEDIO_PWM;
+        err_desvia = 0;
         while (ir_read() != 2)
         { // Não está vendo o da esquerda
             /* code */

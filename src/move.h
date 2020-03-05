@@ -22,6 +22,9 @@
 
 #define LADO 1
 
+unsigned long now,last_update;
+int desvia_pot[2];
+int err_desvia;
 
 void setup_move();
 

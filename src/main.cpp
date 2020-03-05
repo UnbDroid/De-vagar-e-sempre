@@ -133,6 +133,9 @@ void loop() {
       }
     }
     cont_b_b = 0;
+    controle[0] = MEDIO_PWM;
+    controle[1] = MEDIO_PWM;
+    err_controle = 0;
   }
 }
 /*
