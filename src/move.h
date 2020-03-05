@@ -15,7 +15,7 @@
 
 #define RETO_TIME   50
 #define GIRO_TIME   50 //60
-#define MEDIO_PWM    150
+#define MEDIO_PWM    85
 #define TRANCO_PWM    250
 #define ERRO_GIRO   5.0
 

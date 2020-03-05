@@ -35,7 +35,7 @@ void segue_reto(int pot[] , int *err, float delta, float angulo){
     if(pot[0] > 250) pot[0] = 250;
     if(pot[1] > 250) pot[1] = 250;
 
-    motor(pot[0], pot[1], 20);
+    motor(pot[0], pot[1], 10);
 }
 
 void tras(){

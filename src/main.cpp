@@ -18,6 +18,7 @@ void setup()
   Serial.begin(9600);
   setup_move();
   setup_ir();
+  setup_cor();
   para(1000);
   setup_us();
   startGyro();
@@ -59,7 +60,7 @@ void loop() {
   a = ir_read();
   last_angle = getGyro();
   Serial.println(a);
-  if(cont_b_b < 4){
+  if(cont_b_b < 5){
     switch (a) {
       case 0: //Branco nos dois
         ++cont_b_b;
@@ -116,7 +117,8 @@ void loop() {
   }
   else{
     para(100);
-    motor(TRANCO_PWM, TRANCO_PWM, 10);
+    a = ir_read();
+    motor(TRANCO_PWM, TRANCO_PWM, 5);
     while(a == 0){
       segue_reto(controle, &err_controle, 0, last_angle);
       a = ir_read();
@@ -127,5 +129,5 @@ void loop() {
       }
     }
     cont_b_b = 0;
-  }
+  }*/
 }
