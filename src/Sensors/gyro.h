@@ -24,5 +24,9 @@ void updateGyro();
 // Gyro setup function
 void startGyro();
 
+void resetGyro();
+
+float getGyro();
+
 // Prints current angle on serial monitor
 void printGyro();
