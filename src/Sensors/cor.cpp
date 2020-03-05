@@ -85,25 +85,29 @@ int media_dp () {
 }
 
 int cor(){
+  int retorno = 0;
   le_sensor(TCS_OUT);
   switch(media_dp()) {
     case OUTRA_COR:
         digitalWrite(led_B, LOW);
         digitalWrite(led_G, LOW);
         digitalWrite(led_R, HIGH);
-        return OUTRA_COR;
+        retorno = OUTRA_COR;
+        break;
     case BRANCO:
         digitalWrite(led_B, HIGH);
         digitalWrite(led_G, HIGH);
         digitalWrite(led_R, HIGH);
-        return BRANCO;
+        retorno = BRANCO;
+        break;
     case PRETO:
         digitalWrite(led_B, HIGH);
         digitalWrite(led_G, LOW);
         digitalWrite(led_R, LOW);
-        return PRETO;
+        retorno = PRETO;
+        break;
   }
-
+  return retorno;
 }
 
 void teste_cor(){

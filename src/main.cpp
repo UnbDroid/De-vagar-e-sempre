@@ -121,7 +121,7 @@ void loop() {
     a = ir_read();
     cor_vista = cor();
     motor(TRANCO_PWM, TRANCO_PWM, 5);
-    while(a == 0 || cor_vista != OUTRA_COR\){
+    while(a == 0 || cor_vista != OUTRA_COR){
       segue_reto(controle, &err_controle, 0, last_angle);
       a = ir_read();
       cor_vista = cor();
