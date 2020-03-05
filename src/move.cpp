@@ -46,10 +46,10 @@ void tras(){
 }
 
 void para(int t){
-    digitalWrite(MA1, false);
-    digitalWrite(MA2, false);
-    digitalWrite(MB1, false);
-    digitalWrite(MB2, false);
+    digitalWrite(MA1, true);
+    digitalWrite(MA2, true);
+    digitalWrite(MB1, true);
+    digitalWrite(MB2, true);
     delay(t);
 }
 

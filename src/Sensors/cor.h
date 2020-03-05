@@ -29,7 +29,7 @@ Recebe a porta OUT do sensor TCS230*/
 int media_dp(); 
 //Retorna 1 se é preto ou branco e 0 se é outra cor
 
-void cor(); /*Acende o led RGB de acordo com:
+int cor(); /*Acende o led RGB de acordo com:
     azul para PRETO
     todas as cores para BRANCO
     vermelho para OUTRA COR*/

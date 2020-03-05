@@ -9,7 +9,7 @@
 
 #define PWM 6/12 //Retificando o valor pwm para ficar no máximo 6V 
 
-#define KP 50
+#define KP 10
 #define KI 0.1
 #define KD 0.1
 
