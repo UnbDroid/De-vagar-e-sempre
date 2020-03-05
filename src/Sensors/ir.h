@@ -1,7 +1,7 @@
 #ifndef IR_H
 #define IR_H
-#define IRA A0 //A0 do sensor IR esquerda - analógico 
-#define IRB A1 //A0 do sensor IR direita - analógico
+#define IRA A13 //A0 do sensor IR esquerda - analógico 
+#define IRB A12 //A0 do sensor IR direita - analógico
 #define IRAd    26  //D0 do sensor IR esquerda - digital  
 
 #define PRETOA   220

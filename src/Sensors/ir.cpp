@@ -1,4 +1,4 @@
-#include <ir.h>
+#include "ir.h"
 #include <Arduino.h>
 
 void setup_ir() {
