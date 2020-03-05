@@ -18,13 +18,9 @@
 #define PRETO 2
 #define OUTRA_COR 0
 
-
-double cores[3];
-int medidas[MEDIANA];
-
 void setup_cor();
 
-int mediana(int *);
+int mediana();
 
 void le_sensor(int); 
 /*Atualiza os valores de cores[3], onde cores[0] = R, cores[1] = G e cores[2] = B
@@ -33,11 +29,13 @@ Recebe a porta OUT do sensor TCS230*/
 int media_dp(); 
 //Retorna 1 se é preto ou branco e 0 se é outra cor
 
-void teste_cor();
-/*Mostra os valores lidos em RGB e acende o led RGB:
+void cor(); /*Acende o led RGB de acordo com:
     azul para PRETO
     todas as cores para BRANCO
-    vermelho para OUTRA COR
+    vermelho para OUTRA COR*/
+
+void teste_cor();
+/*Mostra os valores lidos em RGB
 
     ***RODAR SEMPRE PARA CALIBRAÇÃO***
 
