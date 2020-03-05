@@ -26,16 +26,17 @@ void frente(int pot){
 
 void segue_reto(int pot[] , int *err, float delta, float angulo){
     *err = angulo - getGyro();
+    Serial.println(*err);
 
-    pot[0] -= *err * KP;
-    pot[1] += *err * KP;
+    pot[0] += *err * KP;
+    pot[1] -= *err * KP;
 
     if(pot[0] < MINIMO_PWM) pot[0] = MINIMO_PWM;
     if(pot[1] < MINIMO_PWM) pot[1] = MINIMO_PWM;
-    if(pot[0] > 250) pot[0] = 250;
-    if(pot[1] > 250) pot[1] = 250;
+    if(pot[0] > 250) pot[0] = 230;
+    if(pot[1] > 250) pot[1] = 230;
 
-    motor(pot[0], pot[1], 10);
+    motor(pot[0], pot[1], 0);
 }
 
 void tras(){
