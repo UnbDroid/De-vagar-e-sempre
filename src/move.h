@@ -9,13 +9,14 @@
 
 #define PWM 6/12 //Retificando o valor pwm para ficar no máximo 6V 
 
-#define KP 10
+#define KP 2
 #define KI 0.1
 #define KD 0.1
 
 #define RETO_TIME   50
 #define GIRO_TIME   50 //60
-#define MEDIO_PWM    85
+#define MEDIO_PWM    100
+#define MINIMO_PWM    85
 #define TRANCO_PWM    250
 #define ERRO_GIRO   5.0
 
