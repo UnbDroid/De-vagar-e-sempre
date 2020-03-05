@@ -30,8 +30,8 @@ void segue_reto(int pot[] , int *err, float delta, float angulo){
     pot[0] -= *err * KP;
     pot[1] += *err * KP;
 
-    if(pot[0] < MEDIO_PWM) pot[0] = MEDIO_PWM;
-    if(pot[1] < MEDIO_PWM) pot[1] = MEDIO_PWM;
+    if(pot[0] < MINIMO_PWM) pot[0] = MINIMO_PWM;
+    if(pot[1] < MINIMO_PWM) pot[1] = MINIMO_PWM;
     if(pot[0] > 250) pot[0] = 250;
     if(pot[1] > 250) pot[1] = 250;
 
